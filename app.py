@@ -3,11 +3,15 @@ from time import sleep
 import spidev
 import requests
 import os
+import RPi.GPIO as GPIO
 
-DEBUG = 0
+LED = 17
 
 spi = spidev.SpiDev()
 spi.open(0, 0)
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED, GPIO.OUT)
 
 
 # read SPI data from MCP3008 chip, 8 possible adc's (0 thru 7)
@@ -23,5 +27,10 @@ while True:
     light = readadc(0)
 
     print "Current light reading: {}".format(light)
+
+    if light < 200:
+        GPIO.output(LED, True)
+    else:
+        GPIO.output(LED, False)
 
     sleep(1)
