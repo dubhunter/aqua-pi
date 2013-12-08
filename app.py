@@ -5,7 +5,7 @@ import requests
 import os
 import RPi.GPIO as GPIO
 
-LED = 17
+LED = 4
 
 spi = spidev.SpiDev()
 spi.open(0, 0)
