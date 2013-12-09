@@ -41,7 +41,7 @@ class Hyduino:
 
         self.metro_sensor_sample = Metro(500)
         self.metro_sensor_send = Metro(30000)
-        self.metro_poll = Metro(10000)
+        self.metro_poll = Metro(6000)
         self.metro_health = Metro(180000)
 
         self.events = deque()
@@ -51,6 +51,7 @@ class Hyduino:
 
     def loop(self):
         if self.metro_health.check():
+            self.log("Health checks are failing. I'm sad :(")
             self.color(colors.red)
             self.event('network', 'error')
 
@@ -82,6 +83,8 @@ class Hyduino:
                 data = r.json()
                 if len(data):
                     self.power(data['power'] == 'on')
+
+                self.metro_health.reset()
             else:
                 self.log('Polling non-200 response')
                 self.event('network', 'error')
@@ -102,7 +105,9 @@ class Hyduino:
                                   data=event,
                                   auth=(credentials.username, credentials.password),
                                   timeout=self.timeout)
-                if r.status_code != 200:
+                if r.status_code == 200:
+                    self.metro_health.reset()
+                else:
                     self.log('Sending event non-200 response')
                     self.event('network', 'error')
 
