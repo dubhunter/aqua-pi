@@ -79,7 +79,7 @@ class Hyduino:
                 self.log(r.text)
                 data = r.json()
                 if len(data):
-                    self.power(data.power == 'on')
+                    self.power(data['power'] == 'on')
             else:
                 self.event('network', 'error')
         except:
