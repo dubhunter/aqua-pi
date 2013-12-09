@@ -19,7 +19,7 @@ class Hyduino:
     HOST = 'http://hyduino.willandchi.com'
     ENDPOINT_POLL = '/v1/poll'
     ENDPOINT_EVENT = '/v1/events'
-    timeout = 1
+    timeout = 2
 
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
@@ -82,17 +82,20 @@ class Hyduino:
                     self.power(data['power'] == 'on')
             else:
                 self.event('network', 'error')
-        except:
+        except Exceptions:
             self.event('network', 'error')
 
     def send_events(self):
         if len(self.events) > 0:
             event = self.events.popleft()
-            r = requests.post(self.HOST + self.ENDPOINT_EVENT,
-                              data=event,
-                              auth=(credentials.username, credentials.password),
-                              timeout=self.timeout)
-            if r.status_code != 200:
+            try:
+                r = requests.post(self.HOST + self.ENDPOINT_EVENT,
+                                  data=event,
+                                  auth=(credentials.username, credentials.password),
+                                  timeout=self.timeout)
+                if r.status_code != 200:
+                    self.event('network', 'error')
+            except Exceptions:
                 self.event('network', 'error')
 
     def power(self, on):
