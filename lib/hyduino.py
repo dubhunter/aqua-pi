@@ -3,6 +3,7 @@ import requests
 import spidev
 from collections import namedtuple, deque
 from lib import colors
+from lib import credentials
 from lib.metro import Metro
 from lib.sensor import Sensor
 import RPi.GPIO as GPIO
@@ -71,7 +72,9 @@ class Hyduino:
 
     def poll(self):
         try:
-            r = requests.get(self.HOST + self.ENDPOINT_POLL, timeout=self.timeout)
+            r = requests.get(self.HOST + self.ENDPOINT_POLL,
+                             auth=(credentials.username, credentials.password),
+                             timeout=self.timeout)
             if r.status_code == 200:
                 data = r.json()
                 self.power(data.power == 'on')
@@ -83,7 +86,10 @@ class Hyduino:
     def send_events(self):
         if len(self.events) > 0:
             event = self.events.popleft()
-            r = requests.post(self.HOST + self.ENDPOINT_EVENT, data=event, timeout=self.timeout)
+            r = requests.post(self.HOST + self.ENDPOINT_EVENT,
+                              data=event,
+                              auth=(credentials.username, credentials.password),
+                              timeout=self.timeout)
             if r.status_code != 200:
                 self.event('network', 'error')
 
