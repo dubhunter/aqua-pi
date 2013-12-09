@@ -76,6 +76,7 @@ class Hyduino:
                              auth=(credentials.username, credentials.password),
                              timeout=self.timeout)
             if r.status_code == 200:
+		self.log(r.text)
                 data = r.json()
                 self.power(data.power == 'on')
             else:
