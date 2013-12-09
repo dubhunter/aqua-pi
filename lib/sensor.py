@@ -16,9 +16,13 @@ class Sensor:
     def read(self):
         r = self.connection.xfer2([1, (8 + self.pin) << 4, 0])
         self.reading += ((r[1] & 3) << 8) + r[2]
+        self.reading += 1
 
     def value(self):
-        v = self.reading / self.count
+        if self.count > 0:
+            v = self.reading / self.count
+        else:
+            v = 0
         self.reading = 0
         self.count = 0
         return v
