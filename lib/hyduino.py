@@ -78,7 +78,8 @@ class Hyduino:
             if r.status_code == 200:
                 self.log(r.text)
                 data = r.json()
-                self.power(data.power == 'on')
+                if len(data):
+                    self.power(data.power == 'on')
             else:
                 self.event('network', 'error')
         except:
