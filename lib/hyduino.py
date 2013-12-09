@@ -28,7 +28,7 @@ class Hyduino:
         self.spi = spidev.SpiDev()
         self.spi.open(0, SPI_ADC)
 
-        self.led = BlinkM()
+        # self.led = BlinkM()
 
         self.sensor_light = Sensor(self.spi, ADC_LIGHT)
         self.sensor_liquid = Sensor(self.spi, ADC_LIQUID)
@@ -41,18 +41,18 @@ class Hyduino:
         self.events = deque()
 
     def init(self):
-        self.led.reset()
+        # self.led.reset()
 
-        self.led.play_script(Scripts.THUNDERSTORM)
+        # self.led.play_script(Scripts.THUNDERSTORM)
 
         time.sleep(3)
 
-        self.led.reset()
-        self.led.fade_to_hex(colors.green)
+        # self.led.reset()
+        self.color(colors.green)
 
     def loop(self):
         # if self.metro_health.check():
-        #     self.led.fade_to_hex(colors.red)
+        #     self.color(colors.red)
         #     self.event('network', 'error')
         #
         # if self.metro_sensor_sample.check():
@@ -101,11 +101,11 @@ class Hyduino:
     def power(self, on):
         if on:
             GPIO.output(PIN_POWER, True)
-            self.led.fade_to_hex(colors.blue)
+            self.color(colors.blue)
             self.event('power', 'on')
         else:
             GPIO.output(PIN_POWER, False)
-            self.led.fade_to_hex(colors.green)
+            self.color(colors.green)
             self.event('power', 'off')
 
     def event(self, name, data):
@@ -113,6 +113,9 @@ class Hyduino:
             'event': name,
             'data': data
         })
+
+    def color(self, color):
+        # self.led.fade_to_hex(color)
 
     def log(self, msg):
         if self.DEBUG:
