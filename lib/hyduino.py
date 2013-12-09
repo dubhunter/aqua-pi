@@ -19,7 +19,7 @@ class Hyduino:
     HOST = 'http://hyduino.willandchi.com'
     ENDPOINT_POLL = '/v1/poll'
     ENDPOINT_EVENT = '/v1/events'
-    timeout = 0.2
+    timeout = 1
 
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
