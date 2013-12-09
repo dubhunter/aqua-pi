@@ -82,7 +82,7 @@ class Hyduino:
                     self.power(data['power'] == 'on')
             else:
                 self.event('network', 'error')
-        except Exceptions:
+        except Exception:
             self.event('network', 'error')
 
     def send_events(self):
@@ -95,7 +95,7 @@ class Hyduino:
                                   timeout=self.timeout)
                 if r.status_code != 200:
                     self.event('network', 'error')
-            except Exceptions:
+            except Exception:
                 self.event('network', 'error')
 
     def power(self, on):
