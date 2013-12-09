@@ -1,5 +1,6 @@
 import time
 import requests
+import json
 import spidev
 from collections import namedtuple, deque
 from lib import colors
@@ -22,13 +23,18 @@ class Hyduino:
     timeout = 2
 
     def __init__(self):
+        self.log('Hyduino initializing...')
+
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(PIN_POWER, GPIO.OUT)
 
+        # self.led = BlinkM()
+        # self.led.reset()
+        # self.led.play_script(Scripts.THUNDERSTORM)
+        # time.sleep(3)
+
         self.spi = spidev.SpiDev()
         self.spi.open(0, SPI_ADC)
-
-        # self.led = BlinkM()
 
         self.sensor_light = Sensor(self.spi, ADC_LIGHT)
         self.sensor_liquid = Sensor(self.spi, ADC_LIQUID)
@@ -39,13 +45,6 @@ class Hyduino:
         self.metro_health = Metro(180000)
 
         self.events = deque()
-
-    def init(self):
-        # self.led.reset()
-
-        # self.led.play_script(Scripts.THUNDERSTORM)
-
-        time.sleep(3)
 
         # self.led.reset()
         self.color(colors.green)
@@ -71,31 +70,44 @@ class Hyduino:
         time.sleep(0.1)
 
     def poll(self):
+        self.log('Polling...')
+
         try:
             r = requests.get(self.HOST + self.ENDPOINT_POLL,
                              auth=(credentials.username, credentials.password),
                              timeout=self.timeout)
+            self.log(r.text)
+
             if r.status_code == 200:
-                self.log(r.text)
                 data = r.json()
                 if len(data):
                     self.power(data['power'] == 'on')
             else:
+                self.log('Polling non-200 response')
                 self.event('network', 'error')
+
         except Exception:
+            self.log('Polling failed')
             self.event('network', 'error')
 
     def send_events(self):
         if len(self.events) > 0:
+            self.log('Sending event...')
+
             event = self.events.popleft()
+            self.log(json.dumps(event))
+
             try:
                 r = requests.post(self.HOST + self.ENDPOINT_EVENT,
                                   data=event,
                                   auth=(credentials.username, credentials.password),
                                   timeout=self.timeout)
                 if r.status_code != 200:
+                    self.log('Sending event non-200 response')
                     self.event('network', 'error')
+
             except Exception:
+                self.log('Sending event failed')
                 self.event('network', 'error')
 
     def power(self, on):
