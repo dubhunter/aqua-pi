@@ -13,10 +13,6 @@ SPI_ADC = 0
 ADC_LIGHT = 0
 ADC_LIQUID = 1
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(PIN_POWER, GPIO.OUT)
-
-
 class Hyduino:
     DEBUG = False
     HOST = 'http://hyduino.willandchi.com'
@@ -25,6 +21,9 @@ class Hyduino:
     timeout = 0.2
 
     def __init__(self):
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(PIN_POWER, GPIO.OUT)
+
         self.spi = spidev.SpiDev()
         self.spi.open(0, SPI_ADC)
 
