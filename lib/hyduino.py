@@ -51,17 +51,17 @@ class Hyduino:
         self.led.fade_to_hex(colors.green)
 
     def loop(self):
-        if self.metro_health.check():
-            self.led.fade_to_hex(colors.red)
-            self.event('network', 'error')
-
-        if self.metro_sensor_sample.check():
-            self.sensor_light.read()
-            self.sensor_liquid.read()
-
-        if self.metro_sensor_send.check():
-            self.event('light', self.sensor_light.value())
-            self.event('liquid', max(0, 500 - self.sensor_liquid.value()))
+        # if self.metro_health.check():
+        #     self.led.fade_to_hex(colors.red)
+        #     self.event('network', 'error')
+        #
+        # if self.metro_sensor_sample.check():
+        #     self.sensor_light.read()
+        #     self.sensor_liquid.read()
+        #
+        # if self.metro_sensor_send.check():
+        #     self.event('light', self.sensor_light.value())
+        #     self.event('liquid', max(0, 500 - self.sensor_liquid.value()))
 
         if self.metro_poll.check():
             self.poll()
