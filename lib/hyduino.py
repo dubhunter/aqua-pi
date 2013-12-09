@@ -116,6 +116,7 @@ class Hyduino:
 
     def color(self, color):
         # self.led.fade_to_hex(color)
+        pass
 
     def log(self, msg):
         if self.DEBUG:
