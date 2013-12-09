@@ -82,7 +82,7 @@ class Hyduino:
             self.event('network', 'error')
 
     def send_events(self):
-        if self.events.count() > 0:
+        if len(self.events) > 0:
             event = self.events.popleft()
             r = requests.post(self.HOST + self.ENDPOINT_EVENT, data=event, timeout=self.timeout)
             if r.status_code != 200:
