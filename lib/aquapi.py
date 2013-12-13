@@ -15,15 +15,16 @@ SPI_ADC = 0
 ADC_LIGHT = 0
 ADC_LIQUID = 1
 
-class Hyduino:
+
+class AquaPi:
     DEBUG = False
-    HOST = 'http://hyduino.willandchi.com'
+    HOST = 'http://aqua.willandchi.com'
     ENDPOINT_POLL = '/v1/poll'
     ENDPOINT_EVENT = '/v1/events'
     timeout = 2
 
     def __init__(self):
-        self.log('Hyduino initializing...')
+        self.log('AquaPi initializing...')
 
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(PIN_POWER, GPIO.OUT)

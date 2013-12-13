@@ -1,4 +1,4 @@
-hyduino-pi
+aqua-pi
 ==========
 
-The hardware component of the hyduino.
+The raspberry pi hardware component of aqua.

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-from lib.hyduino import Hyduino
+from lib.aquapi import AquaPi
 
-hyduino = Hyduino()
-hyduino.DEBUG = True
+aquapi = AquaPi()
+aquapi.DEBUG = True
 
 while 1:
-    hyduino.loop()
+    aquapi.loop()
