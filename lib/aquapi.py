@@ -21,7 +21,7 @@ class AquaPi:
     HOST = 'http://aqua.willandchi.com'
     ENDPOINT_POLL = '/v1/poll'
     ENDPOINT_EVENT = '/v1/events'
-    timeout = 2
+    timeout = 3
 
     def __init__(self):
         self.log('AquaPi initializing...')
