@@ -90,7 +90,7 @@ class AquaPi:
                 self.log('Polling non-200 response')
                 self.event('network', 'error')
 
-        except Exception:
+        except requests.RequestException:
             self.log('Polling failed')
             self.event('network', 'error')
 
@@ -112,7 +112,7 @@ class AquaPi:
                     self.log('Sending event non-200 response')
                     self.event('network', 'error')
 
-            except Exception:
+            except requests.RequestException:
                 self.log('Sending event failed')
                 self.event('network', 'error')
 
