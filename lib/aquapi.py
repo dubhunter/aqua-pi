@@ -2,7 +2,7 @@ import time
 import requests
 import json
 import spidev
-from collections import namedtuple, deque
+from collections import deque
 from lib import colors
 from lib import credentials
 from lib.metro import Metro
@@ -29,10 +29,10 @@ class AquaPi:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(PIN_POWER, GPIO.OUT)
 
-        # self.led = BlinkM()
-        # self.led.reset()
-        # self.led.play_script(Scripts.THUNDERSTORM)
-        # time.sleep(3)
+        self.led = BlinkM()
+        self.led.reset()
+        self.led.play_script(Scripts.THUNDERSTORM)
+        time.sleep(3)
 
         self.spi = spidev.SpiDev()
         self.spi.open(0, SPI_ADC)
@@ -47,7 +47,7 @@ class AquaPi:
 
         self.events = deque()
 
-        # self.led.reset()
+        self.led.reset()
         self.color(colors.green)
 
     def loop(self):
@@ -133,7 +133,7 @@ class AquaPi:
         })
 
     def color(self, color):
-        # self.led.fade_to_hex(color)
+        self.led.fade_to_hex(color)
         pass
 
     def log(self, msg):
