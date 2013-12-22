@@ -1,8 +1,8 @@
 import time
 import requests
 import json
-    import spidev
-    from collections import deque
+import spidev
+from collections import deque
 from lib import colors
 from lib import credentials
 from lib.metro import Metro
