@@ -1,3 +1,3 @@
 blue = '006fff'
-green = 'a0ff00'
+green = '00ff00'
 red = 'ff0000'
