@@ -31,7 +31,7 @@ class AquaPi:
 
         self.led = BlinkM()
         self.led.reset()
-        self.led.play_script(Scripts.THUNDERSTORM)
+        self.led.play_script(Scripts.WATER_REFLECTIONS)
         time.sleep(3)
 
         self.spi = spidev.SpiDev()
