@@ -52,7 +52,6 @@ class AquaPi:
         self.events = deque()
         self.running = False
 
-        self.led.reset()
         self.happy()
 
     def loop(self):
@@ -78,7 +77,9 @@ class AquaPi:
 
     def poll(self):
         self.log('Polling...')
-        self.led.play_script(Scripts.TRANSFER)
+
+        # self.led.reset()
+        # self.led.play_script(Scripts.TRANSFER)
 
         try:
             r = requests.get(self.HOST + self.ENDPOINT_POLL,
@@ -109,7 +110,9 @@ class AquaPi:
 
             event = self.events.popleft()
             self.log(json.dumps(event))
-            # self.led.play_script(Scripts.WHITE_FLASH)
+
+            # self.led.reset()
+            # self.led.play_script(Scripts.TRANSFER)
 
             try:
                 r = requests.post(self.HOST + self.ENDPOINT_EVENT,
@@ -146,9 +149,11 @@ class AquaPi:
         })
 
     def sad(self):
+        self.led.reset()
         self.led.play_script(Scripts.RED_FLASH)
 
     def happy(self):
+        self.led.reset()
         if self.running:
             self.led.play_script(Scripts.BLUE_FLASH)
         else:
