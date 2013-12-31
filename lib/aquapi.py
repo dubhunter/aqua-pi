@@ -15,6 +15,8 @@ SPI_ADC = 0
 ADC_LIGHT = 0
 ADC_LIQUID = 1
 
+Scripts.TRANSFER = 0
+
 
 class AquaPi:
     DEBUG = False
@@ -22,6 +24,7 @@ class AquaPi:
     ENDPOINT_POLL = '/v1/poll'
     ENDPOINT_EVENT = '/v1/events'
     timeout = 3
+    led_fade_speed = 64
 
     def __init__(self):
         self.log('AquaPi initializing...')
@@ -31,8 +34,9 @@ class AquaPi:
 
         self.led = BlinkM()
         self.led.reset()
-        self.led.play_script(Scripts.WATER_REFLECTIONS)
-        time.sleep(3)
+        self.led.set_fade_speed(self.led_fade_speed)
+        # self.led.write_script_line(Scripts.TRANSFER, 0, 10, 'c', 0xff, 0xff, 0xff)
+        # self.led.write_script_line(Scripts.TRANSFER, 1, 10, 'c', 0x00, 0x00, 0x00)
 
         self.spi = spidev.SpiDev()
         self.spi.open(0, SPI_ADC)
@@ -46,14 +50,15 @@ class AquaPi:
         self.metro_health = Metro(180000)
 
         self.events = deque()
+        self.running = False
 
         self.led.reset()
-        self.color(colors.green)
+        self.happy()
 
     def loop(self):
         if self.metro_health.check():
             self.log("Health checks are failing. I'm sad :(")
-            self.color(colors.red)
+            self.sad()
             self.event('network', 'error')
 
         if self.metro_sensor_sample.check():
@@ -73,6 +78,7 @@ class AquaPi:
 
     def poll(self):
         self.log('Polling...')
+        self.led.play_script(Scripts.TRANSFER)
 
         try:
             r = requests.get(self.HOST + self.ENDPOINT_POLL,
@@ -86,6 +92,7 @@ class AquaPi:
                     self.power(data['power'] == 'on')
 
                 self.metro_health.reset()
+                self.happy()
             else:
                 self.log('Polling non-200 response')
                 self.event('network', 'error')
@@ -94,12 +101,15 @@ class AquaPi:
             self.log('Polling failed')
             self.event('network', 'error')
 
+        self.led.stop_script()
+
     def send_events(self):
         if len(self.events) > 0:
             self.log('Sending event...')
 
             event = self.events.popleft()
             self.log(json.dumps(event))
+            # self.led.play_script(Scripts.WHITE_FLASH)
 
             try:
                 r = requests.post(self.HOST + self.ENDPOINT_EVENT,
@@ -108,6 +118,7 @@ class AquaPi:
                                   timeout=self.timeout)
                 if r.status_code == 200:
                     self.metro_health.reset()
+                    self.happy()
                 else:
                     self.log('Sending event non-200 response')
                     self.event('network', 'error')
@@ -119,11 +130,13 @@ class AquaPi:
     def power(self, on):
         if on:
             GPIO.output(PIN_POWER, True)
-            self.color(colors.blue)
+            self.running = True
+            self.happy()
             self.event('power', 'on')
         else:
             GPIO.output(PIN_POWER, False)
-            self.color(colors.green)
+            self.running = False
+            self.happy()
             self.event('power', 'off')
 
     def event(self, name, data):
@@ -132,9 +145,14 @@ class AquaPi:
             'data': data
         })
 
-    def color(self, color):
-        self.led.go_to_hex(color)
-        pass
+    def sad(self):
+        self.led.play_script(Scripts.RED_FLASH)
+
+    def happy(self):
+        if self.running:
+            self.led.play_script(Scripts.BLUE_FLASH)
+        else:
+            self.led.fade_to_hex(colors.green)
 
     def log(self, msg):
         if self.DEBUG:
