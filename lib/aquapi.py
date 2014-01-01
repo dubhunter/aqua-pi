@@ -51,6 +51,7 @@ class AquaPi:
 
         self.events = deque()
         self.running = False
+        self.current_color = False
 
         self.happy()
 
@@ -80,6 +81,7 @@ class AquaPi:
 
         # self.led.reset()
         # self.led.play_script(Scripts.TRANSFER)
+        # self.current_color = colors.white
 
         try:
             r = requests.get(self.HOST + self.ENDPOINT_POLL,
@@ -113,6 +115,7 @@ class AquaPi:
 
             # self.led.reset()
             # self.led.play_script(Scripts.TRANSFER)
+            # self.current_color = colors.white
 
             try:
                 r = requests.post(self.HOST + self.ENDPOINT_EVENT,
@@ -150,14 +153,20 @@ class AquaPi:
 
     def sad(self):
         self.led.reset()
-        self.led.play_script(Scripts.RED_FLASH)
+        if self.current_color != colors.red:
+            self.led.play_script(Scripts.RED_FLASH)
+            self.current_color = colors.red
 
     def happy(self):
         self.led.reset()
         if self.running:
-            self.led.play_script(Scripts.BLUE_FLASH)
+            if self.current_color != colors.blue:
+                self.led.play_script(Scripts.BLUE_FLASH)
+                self.current_color = colors.blue
         else:
-            self.led.fade_to_hex(colors.green)
+            if self.current_color != colors.green:
+                self.led.fade_to_hex(colors.green)
+                self.current_color = colors.green
 
     def log(self, msg):
         if self.DEBUG:
