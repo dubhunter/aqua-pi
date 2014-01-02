@@ -67,7 +67,7 @@ class AquaPi:
 
         if self.metro_sensor_send.check():
             self.event('light', self.sensor_light.value())
-            # 0in: 512, 202in: ,12in: 138
+            # 0in: 512, 10in: 202,12in: 138
             self.event('liquid', round((512.0 - self.sensor_liquid.value()) / 310.0 * 100.0, 2))
 
         if self.metro_poll.check():
