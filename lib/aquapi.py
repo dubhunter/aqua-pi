@@ -152,19 +152,20 @@ class AquaPi:
         })
 
     def sad(self):
-        self.led.reset()
         if self.current_color != colors.red:
+            self.led.reset()
             self.led.play_script(Scripts.RED_FLASH)
             self.current_color = colors.red
 
     def happy(self):
-        self.led.reset()
         if self.running:
             if self.current_color != colors.blue:
+                self.led.reset()
                 self.led.play_script(Scripts.BLUE_FLASH)
                 self.current_color = colors.blue
         else:
             if self.current_color != colors.green:
+                self.led.reset()
                 self.led.fade_to_hex(colors.green)
                 self.current_color = colors.green
 
