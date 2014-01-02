@@ -34,7 +34,7 @@ class AquaPi:
 
         self.led = BlinkM()
         self.led.reset()
-        self.led.set_fade_speed(self.led_fade_speed)
+        # self.led.set_fade_speed(self.led_fade_speed)
         # self.led.write_script_line(Scripts.TRANSFER, 0, 10, 'c', 0xff, 0xff, 0xff)
         # self.led.write_script_line(Scripts.TRANSFER, 1, 10, 'c', 0x00, 0x00, 0x00)
 
