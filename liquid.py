@@ -7,5 +7,5 @@ sensor_liquid = Sensor(spi, ADC_LIQUID)
 
 while 1:
     sensor_liquid.read()
-    print sensor_liquid.value()
+    print 512 - sensor_liquid.value()
     time.sleep(0.5)
