@@ -166,7 +166,7 @@ class AquaPi:
         else:
             if self.current_color != colors.green:
                 self.led.reset()
-                self.led.fade_to_hex(colors.green)
+                self.led.go_to_hex(colors.green)
                 self.current_color = colors.green
 
     def log(self, msg):
