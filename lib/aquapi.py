@@ -15,7 +15,7 @@ SPI_ADC = 0
 ADC_LIGHT = 0
 ADC_LIQUID = 1
 
-Scripts.TRANSFER = 0
+Scripts.TRANSFER = Scripts.WHITE_FLASH
 
 
 class AquaPi:
@@ -34,7 +34,7 @@ class AquaPi:
 
         self.led = BlinkM()
         self.led.reset()
-        # self.led.set_fade_speed(self.led_fade_speed)
+        self.led.set_fade_speed(self.led_fade_speed)
         # self.led.write_script_line(Scripts.TRANSFER, 0, 10, 'c', 0xff, 0xff, 0xff)
         # self.led.write_script_line(Scripts.TRANSFER, 1, 10, 'c', 0x00, 0x00, 0x00)
 
@@ -79,9 +79,9 @@ class AquaPi:
     def poll(self):
         self.log('Polling...')
 
-        # self.led.reset()
-        # self.led.play_script(Scripts.TRANSFER)
-        # self.current_color = colors.white
+        self.led.reset()
+        self.led.play_script(Scripts.TRANSFER)
+        self.current_color = colors.white
 
         try:
             r = requests.get(self.HOST + self.ENDPOINT_POLL,
@@ -111,9 +111,9 @@ class AquaPi:
             event = self.events.popleft()
             self.log(json.dumps(event))
 
-            # self.led.reset()
-            # self.led.play_script(Scripts.TRANSFER)
-            # self.current_color = colors.white
+            self.led.reset()
+            self.led.play_script(Scripts.TRANSFER)
+            self.current_color = colors.white
 
             try:
                 r = requests.post(self.HOST + self.ENDPOINT_EVENT,
