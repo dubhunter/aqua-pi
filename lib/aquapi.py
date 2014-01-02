@@ -104,8 +104,6 @@ class AquaPi:
             self.log('Polling failed')
             self.event('network', 'error')
 
-        self.led.stop_script()
-
     def send_events(self):
         if len(self.events) > 0:
             self.log('Sending event...')
