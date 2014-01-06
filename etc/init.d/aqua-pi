@@ -22,11 +22,15 @@ DAEMON_USER=root
 # The process ID of the script when it runs is stored here:
 PIDFILE=/var/run/$DAEMON_NAME.pid
 
+# The log file where all output goes when it runs is stored here:
+LOGFILE=/var/log/$DAEMON_NAME.log
+
 . /lib/lsb/init-functions
 
 do_start () {
     log_daemon_msg "Starting system $DAEMON_NAME daemon"
-    start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --startas $DAEMON
+#    start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --startas $DAEMON
+    start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --exec /bin/bash -- -c "$DAEMON > /var/log/some.log 2>&1"
     log_end_msg $?
 }
 do_stop () {
