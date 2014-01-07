@@ -29,6 +29,7 @@ class AquaPi:
     def __init__(self):
         self.log('AquaPi initializing...')
 
+        GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(PIN_POWER, GPIO.OUT)
 
