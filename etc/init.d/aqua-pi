@@ -29,8 +29,7 @@ LOGFILE=/var/log/$DAEMON_NAME.log
 
 do_start () {
     log_daemon_msg "Starting system $DAEMON_NAME daemon"
-    start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --no-close --startas $DAEMON
-#    start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --no-close --exec /bin/bash -- -c "exec $DAEMON >> $LOGFILE 2>&1"
+    start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --user $DAEMON_USER --startas $DAEMON
     log_end_msg $?
 }
 do_stop () {
