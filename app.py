@@ -2,7 +2,7 @@
 import sys
 from lib.aquapi import AquaPi
 
-log = open('/var/log/aqua-pi.log', 'w')
+log = open('/var/log/aqua-pi.log', 'a', 0)
 sys.stdout = log
 sys.stderr = log
 
