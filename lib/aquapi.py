@@ -171,4 +171,4 @@ class AquaPi:
 
     def log(self, msg):
         if self.DEBUG:
-            print msg
+            print "[{}] {}".format(time.strftime('%Y-%m-%d %H:%M:%S'), msg)
