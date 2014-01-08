@@ -81,8 +81,7 @@ class AquaPi:
     def poll(self):
         self.log('Polling...')
 
-        self.led.reset()
-        self.led.play_script(Scripts.TRANSFER)
+        self.led_script(Scripts.TRANSFER)
         self.current_color = colors.white
 
         try:
@@ -113,8 +112,7 @@ class AquaPi:
             event = self.events.popleft()
             self.log(json.dumps(event))
 
-            self.led.reset()
-            self.led.play_script(Scripts.TRANSFER)
+            self.led_script(Scripts.TRANSFER)
             self.current_color = colors.white
 
             try:
@@ -153,21 +151,34 @@ class AquaPi:
 
     def sad(self):
         if self.current_color != colors.red:
-            self.led.reset()
-            self.led.play_script(Scripts.RED_FLASH)
+            self.led_script(Scripts.RED_FLASH)
             self.current_color = colors.red
 
     def happy(self):
         if self.running:
             if self.current_color != colors.blue:
-                self.led.reset()
-                self.led.play_script(Scripts.BLUE_FLASH)
+                self.led_script(Scripts.BLUE_FLASH)
                 self.current_color = colors.blue
         else:
             if self.current_color != colors.green:
-                self.led.reset()
-                self.led.go_to_hex(colors.green)
+                self.led_color(colors.green)
                 self.current_color = colors.green
+
+    def led_script(self, script):
+        try:
+            self.led.reset()
+            self.led.play_script(script)
+        except IOError:
+            self.log('Playing led script failed')
+            self.event('led', 'error')
+
+    def led_color(self, color):
+        try:
+            self.led.reset()
+            self.led.go_to_hex(color)
+        except IOError:
+            self.log('Changing led color failed')
+            self.event('led', 'error')
 
     def log(self, msg):
         if self.DEBUG:
