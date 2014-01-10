@@ -6,7 +6,7 @@ log = open('/var/log/aqua-pi.log', 'a', 0)
 sys.stdout = log
 sys.stderr = log
 
-AquaPi.DEBUG = True
+# AquaPi.DEBUG = True
 aquapi = AquaPi()
 
 while 1:
