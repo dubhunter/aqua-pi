@@ -2,11 +2,13 @@ import time
 import requests
 import json
 import spidev
+import serial
 from collections import deque
 from lib import colors
 from lib import credentials
 from lib.metro import Metro
-from lib.sensor import Sensor
+from lib.analogsensor import AnalogSensor
+from lib.serialsensor import SerialSensor
 import RPi.GPIO as GPIO
 from pyblinkm import BlinkM, Scripts
 
@@ -14,6 +16,8 @@ PIN_POWER = 4
 SPI_ADC = 0
 ADC_LIGHT = 0
 ADC_LIQUID = 1
+URF_EMPTY = 91.0
+URF_FULL = 1.0
 
 Scripts.TRANSFER = Scripts.WHITE_FLASH
 
@@ -42,8 +46,11 @@ class AquaPi:
         self.spi = spidev.SpiDev()
         self.spi.open(0, SPI_ADC)
 
-        self.sensor_light = Sensor(self.spi, ADC_LIGHT)
-        self.sensor_liquid = Sensor(self.spi, ADC_LIQUID)
+        self.sio = serial.Serial('/dev/ttyAMA0', 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 1)
+
+        self.sensor_light = AnalogSensor(self.spi, ADC_LIGHT)
+        # self.sensor_liquid = AnalogSensor(self.spi, ADC_LIQUID)
+        self.sensor_liquid = SerialSensor(self.sio)
 
         self.metro_sensor_sample = Metro(500)
         self.metro_sensor_send = Metro(30000)
@@ -68,9 +75,14 @@ class AquaPi:
 
         if self.metro_sensor_send.check():
             self.event('light', self.sensor_light.value())
+
+            # Liquid Level Sensor
             # 0in: 512, 10in: 202, 12in: 138
             # sensor degradation, using 242
-            self.event('liquid', round((512.0 - self.sensor_liquid.value()) / 270.0 * 100.0, 2))
+            # self.event('liquid', round((512.0 - self.sensor_liquid.value()) / 270.0 * 100.0, 2))
+
+            # Ultrasonic Range Finder
+            self.event('liquid', round((URF_EMPTY - self.sensor_liquid.value()) / (URF_EMPTY - URF_FULL) * 100.0, 2))
 
         if self.metro_poll.check():
             self.poll()
