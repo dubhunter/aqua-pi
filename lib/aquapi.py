@@ -67,7 +67,7 @@ class AquaPi:
         if self.metro_health.check():
             self.log("Health checks are failing. I'm sad :(")
             self.sad()
-            self.event('network', 'error')
+            self.event('error', 'health-check-failure')
 
         if self.metro_sensor_sample.check():
             self.sensor_light.read()
@@ -112,11 +112,11 @@ class AquaPi:
                 self.happy()
             else:
                 self.log('Polling non-200 response')
-                self.event('network', 'error')
+                self.event('error', 'poll-non-200')
 
         except requests.RequestException:
             self.log('Polling failed')
-            self.event('network', 'error')
+            self.event('error', 'poll-exception')
 
     def send_events(self):
         if len(self.events) > 0:
@@ -138,12 +138,12 @@ class AquaPi:
                     self.happy()
                 else:
                     self.log('Sending event non-200 response')
-                    self.event('network', 'error')
+                    self.event('error', 'event-non-200')
 
             except requests.RequestException:
                 self.events.appendleft(event)
                 self.log('Sending event failed')
-                self.event('network', 'error')
+                self.event('error', 'event-exception')
 
     def power(self, on):
         if on:
