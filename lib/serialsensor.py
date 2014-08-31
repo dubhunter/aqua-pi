@@ -1,5 +1,6 @@
 import re
 
+
 # Sensor attached to TX/RX pins
 class SerialSensor:
     def __init__(self, serial_conn):
