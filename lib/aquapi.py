@@ -27,7 +27,7 @@ class AquaPi:
     HOST = 'http://aqua.willandchi.com'
     ENDPOINT_POLL = '/v1/poll'
     ENDPOINT_EVENT = '/v1/events'
-    timeout = 3
+    timeout = 5
     led_fade_speed = 64
 
     def __init__(self):
@@ -141,6 +141,7 @@ class AquaPi:
                     self.event('network', 'error')
 
             except requests.RequestException:
+                self.events.appendleft(event)
                 self.log('Sending event failed')
                 self.event('network', 'error')
 
