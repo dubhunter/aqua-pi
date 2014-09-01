@@ -9,7 +9,7 @@ class SerialSensor:
         self.count = 0
 
     def read(self):
-        r = self.connection.readline(None, '\r')
+        r = self.connection.readline(eol='\r')
         self.reading += int(re.sub('[^0-9]', '', r))
         self.count += 1
 
