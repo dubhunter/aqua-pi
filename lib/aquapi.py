@@ -17,9 +17,9 @@ ADC_LIQUID = 1
 
 # Liquid Level Sensor
 # 0in: 512, 10in: 202, 12in: 138
-# sensor degradation, using 270
+# sensor degradation, using 242
 LLS_EMPTY = 512.0
-LLS_FULL = 270.0
+LLS_FULL = 242.0
 
 # Ultrasonic Range Finder
 URF_EMPTY = 91.0
@@ -83,7 +83,7 @@ class AquaPi:
             self.event('light', self.sensor_light.value())
 
             # Liquid Level Sensor
-            # self.event('liquid', round((512.0 - self.sensor_liquid.value()) / 270.0 * 100.0, 2))
+            # self.event('liquid', round((LLS_EMPTY - self.sensor_liquid.value()) / (LLS_EMPTY - LLS_FULL) * 100.0, 2))
 
             # Ultrasonic Range Finder
             self.event('liquid', round((URF_EMPTY - self.sensor_liquid.value()) / (URF_EMPTY - URF_FULL) * 100.0, 2))
