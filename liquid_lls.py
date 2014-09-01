@@ -9,5 +9,5 @@ while 1:
     sensor_liquid.read()
     reading = sensor_liquid.value()
     print reading
-    print (512.0 - reading) / (512 - 138) * 100.0
+    print (LLS_EMPTY - reading) / (LLS_EMPTY - LLS_FULL) * 100.0
     time.sleep(0.5)

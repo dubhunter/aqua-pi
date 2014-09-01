@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 from lib.aquapi import *
+import serial
 
-spi = spidev.SpiDev()
-spi.open(0, SPI_ADC)
-sensor_liquid = AnalogSensor(spi, ADC_LIQUID)
+sio = serial.Serial('/dev/ttyAMA0', 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 1)
+sensor_liquid = SerialSensor(sio)
 
 while 1:
     sensor_liquid.read()
