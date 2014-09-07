@@ -22,7 +22,7 @@ LLS_EMPTY = 512.0
 LLS_FULL = 242.0
 
 # Ultrasonic Range Finder
-URF_EMPTY = 64.0
+URF_EMPTY = 66.0
 URF_FULL = 22.0
 
 Scripts.TRANSFER = Scripts.WHITE_FLASH
