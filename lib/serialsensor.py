@@ -10,6 +10,7 @@ class SerialSensor:
         self.count = 0
 
     def read(self):
+        print 'read'
         line = ''
         while True:
             r = self.connection.read()
@@ -19,6 +20,7 @@ class SerialSensor:
             print ''.join([line, r])
             line = ''.join([line, r])
 
+        print 'done'
         print line
         print re.sub('[^0-9]', '', line)
         self.reading += int(re.sub('[^0-9]', '', line))
