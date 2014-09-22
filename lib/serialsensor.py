@@ -10,8 +10,11 @@ class SerialSensor:
         self.count = 0
 
     def read(self):
+        print 'readline'
         r = self.connection.readline()
+        print r
         self.reading += int(re.sub('[^0-9]', '', r))
+        print self.reading
         self.count += 1
 
     def value(self):
