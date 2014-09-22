@@ -18,6 +18,7 @@ class SerialSensor:
                 break
             line = line + r
 
+        print line
         print re.sub('[^0-9]', '', line)
         self.reading += int(re.sub('[^0-9]', '', line))
         print self.reading
