@@ -14,7 +14,7 @@ class SerialSensor:
         while True:
             r = self.connection.read()
             print r
-            if r != '/r':
+            if r == '/r':
                 break
             buffer += r
 
