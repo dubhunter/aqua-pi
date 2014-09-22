@@ -5,7 +5,10 @@ import io
 # Sensor attached to TX/RX pins
 class SerialSensor:
     def __init__(self, serial_conn):
-        self.connection = io.TextIOWrapper(io.BufferedReader(serial_conn), errors='ignore', newline='\r')
+        self.connection = io.TextIOWrapper(io.BufferedRWPair(serial_conn, serial_conn),
+                                           errors='ignore',
+                                           newline='\r',
+                                           line_buffering=True)
         self.reading = 0
         self.count = 0
 
