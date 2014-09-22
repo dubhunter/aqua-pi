@@ -2,11 +2,13 @@ import time
 import requests
 import json
 import spidev
+import serial
 from collections import deque
 from lib import colors
 from lib import credentials
 from lib.metro import Metro
 from lib.analogsensor import AnalogSensor
+from lib.serialsensor import SerialSensor
 import RPi.GPIO as GPIO
 from pyblinkm import BlinkM, Scripts
 
@@ -52,11 +54,11 @@ class AquaPi:
         self.spi = spidev.SpiDev()
         self.spi.open(0, SPI_ADC)
 
-        # self.sio = serial.Serial('/dev/ttyAMA0', 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 1)
+        self.sio = serial.Serial('/dev/ttyAMA0', 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 1)
 
         self.sensor_light = AnalogSensor(self.spi, ADC_LIGHT)
-        self.sensor_liquid = AnalogSensor(self.spi, ADC_LIQUID)
-        # self.sensor_liquid = SerialSensor(self.sio)
+        # self.sensor_liquid = AnalogSensor(self.spi, ADC_LIQUID)
+        self.sensor_liquid = SerialSensor(self.sio)
 
         self.metro_sensor_sample = Metro(500)
         self.metro_sensor_send = Metro(30000)
