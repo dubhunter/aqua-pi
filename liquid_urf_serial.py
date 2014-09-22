@@ -2,7 +2,7 @@
 from lib.aquapi import *
 import serial
 
-sio = serial.Serial('/dev/ttyAMA0', 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 1)
+sio = serial.Serial('/dev/ttyAMA0', 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE)
 sensor_liquid = SerialSensor(sio)
 
 while 1:
