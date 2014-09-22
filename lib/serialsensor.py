@@ -14,7 +14,7 @@ class SerialSensor:
 
     def read(self):
         print 'readline'
-        print self.connection.read()
+        print self.connection.readable()
         r = self.connection.readline()
         print r
         self.reading += int(re.sub('[^0-9]', '', r))
