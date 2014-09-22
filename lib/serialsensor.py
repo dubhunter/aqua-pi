@@ -15,7 +15,7 @@ class SerialSensor:
         while True:
             r = self.connection.read()
             print r
-            if r == '/r':
+            if r == '\r':
                 break
             print ''.join([line, r])
             line = ''.join([line, r])
