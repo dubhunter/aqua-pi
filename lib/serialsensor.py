@@ -16,7 +16,7 @@ class SerialSensor:
             print r
             if r == '/r':
                 break
-            line = line + r
+            line = ''.join([line, r])
 
         print line
         print re.sub('[^0-9]', '', line)
