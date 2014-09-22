@@ -11,15 +11,19 @@ class SerialSensor:
 
     def read(self):
         line = ''
+        self.connection.truncate()
         while True:
             r = self.connection.read()
-            print r
+            if r == 'R':
+                break
+
+        while True:
+            r = self.connection.read()
             if r == '\r':
                 break
             line += r
 
         self.reading += int(re.sub('[^0-9]', '', line))
-        print self.reading
         self.count += 1
 
     def value(self):
