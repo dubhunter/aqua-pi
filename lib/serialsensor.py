@@ -16,6 +16,7 @@ class SerialSensor:
             print r
             if r == '/r':
                 break
+            print ''.join([line, r])
             line = ''.join([line, r])
 
         print line
