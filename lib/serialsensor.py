@@ -11,7 +11,7 @@ class SerialSensor:
 
     def read(self):
         line = ''
-        self.connection.truncate()
+        self.connection.seek(0, whence=io.SEEK_END)
         while True:
             r = self.connection.read()
             if r == 'R':
