@@ -18,6 +18,7 @@ class SerialSensor:
                 break
             buffer += r
 
+        print re.sub('[^0-9]', '', buffer)
         self.reading += int(re.sub('[^0-9]', '', buffer))
         print self.reading
         self.count += 1
