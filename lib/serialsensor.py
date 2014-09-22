@@ -5,19 +5,20 @@ import io
 # Sensor attached to TX/RX pins
 class SerialSensor:
     def __init__(self, serial_conn):
-        self.connection = io.TextIOWrapper(io.BufferedRWPair(serial_conn, serial_conn),
-                                           errors='ignore',
-                                           newline='\r',
-                                           line_buffering=True)
+        self.connection = serial_conn
         self.reading = 0
         self.count = 0
 
     def read(self):
-        print 'readline'
-        print self.connection.readable()
-        r = self.connection.readline()
-        print r
-        self.reading += int(re.sub('[^0-9]', '', r))
+        buffer = ''
+        while True:
+            r = self.connection.read()
+            print r
+            if r != '/r':
+                break
+            buffer += r
+
+        self.reading += int(re.sub('[^0-9]', '', buffer))
         print self.reading
         self.count += 1
 
