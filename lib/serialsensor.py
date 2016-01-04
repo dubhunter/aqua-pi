@@ -1,5 +1,4 @@
 import re
-import io
 
 
 # Sensor attached to TX/RX pins

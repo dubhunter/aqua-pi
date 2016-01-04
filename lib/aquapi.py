@@ -8,6 +8,7 @@ from lib import colors
 from lib import credentials
 from lib.metro import Metro
 from lib.analogsensor import AnalogSensor
+from lib.tempsensor import TempSensor
 from lib.serialsensor import SerialSensor
 import RPi.GPIO as GPIO
 from pyblinkm import BlinkM, Scripts
@@ -15,6 +16,7 @@ from pyblinkm import BlinkM, Scripts
 PIN_POWER = 4
 SPI_ADC = 0
 ADC_LIGHT = 0
+ADC_TEMP = 1
 ADC_LIQUID = 1
 
 # Liquid Level Sensor
@@ -56,8 +58,8 @@ class AquaPi:
 
         self.sio = serial.Serial('/dev/ttyAMA0', 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 1)
 
+        self.sensor_temp = TempSensor(self.spi, ADC_TEMP)
         self.sensor_light = AnalogSensor(self.spi, ADC_LIGHT)
-        # self.sensor_liquid = AnalogSensor(self.spi, ADC_LIQUID)
         self.sensor_liquid = SerialSensor(self.sio)
 
         self.metro_sensor_sample = Metro(500)
@@ -78,10 +80,15 @@ class AquaPi:
             self.event('error', 'health-check-failure')
 
         if self.metro_sensor_sample.check():
+            self.sensor_temp.read()
             self.sensor_light.read()
             self.sensor_liquid.read()
 
         if self.metro_sensor_send.check():
+            # Temperature Sensor
+            self.event('temp', self.sensor_temp.fahrenheit())
+
+            # Light Sensor
             self.event('light', self.sensor_light.value())
 
             # Liquid Level Sensor
@@ -119,10 +126,12 @@ class AquaPi:
             else:
                 self.log('Polling non-200 response')
                 self.event('error', 'poll-non-200')
+                self.sad()
 
         except requests.RequestException:
             self.log('Polling failed')
             self.event('error', 'poll-exception')
+            self.sad()
 
     def send_events(self):
         if len(self.events) > 0:
@@ -145,11 +154,13 @@ class AquaPi:
                 else:
                     self.log('Sending event non-200 response')
                     self.event('error', 'event-non-200')
+                    self.sad()
 
             except requests.RequestException:
                 self.events.appendleft(event)
                 self.log('Sending event failed')
                 self.event('error', 'event-exception')
+                self.sad()
 
     def power(self, on):
         if on:

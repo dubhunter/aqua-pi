@@ -1,4 +1,3 @@
-import spidev
 
 
 # Sensor attached to MCP3008 chip (read through SPI)
@@ -6,7 +5,7 @@ import spidev
 class AnalogSensor:
     def __init__(self, spi_conn, adc_pin):
         if adc_pin > 7 or adc_pin < 0:
-            raise Exception('adc_num must be between 0 and 7')
+            raise Exception('adc_pin must be between 0 and 7')
 
         self.connection = spi_conn
         self.pin = adc_pin
