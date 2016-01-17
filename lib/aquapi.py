@@ -33,7 +33,7 @@ Scripts.TRANSFER = Scripts.WHITE_FLASH
 
 
 class AquaPi:
-    DEBUG = True
+    DEBUG = False
     HOST = 'http://aqua.willandchi.com'
     ENDPOINT_POLL = '/v1/poll'
     ENDPOINT_EVENT = '/v1/events'
