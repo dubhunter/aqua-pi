@@ -91,7 +91,7 @@ class AquaPi:
             self.log("Creating sensor events...")
 
             # Temperature Sensor
-            self.event('temp', self.sensor_temp.fahrenheit())
+            self.event('temp', round(self.sensor_temp.fahrenheit(), 2))
 
             # Light Sensor
             self.event('light', self.sensor_light.value())
