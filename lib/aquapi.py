@@ -33,7 +33,7 @@ Scripts.TRANSFER = Scripts.WHITE_FLASH
 
 
 class AquaPi:
-    DEBUG = False
+    DEBUG = True
     HOST = 'http://aqua.willandchi.com'
     ENDPOINT_POLL = '/v1/poll'
     ENDPOINT_EVENT = '/v1/events'
@@ -74,6 +74,8 @@ class AquaPi:
         self.happy()
 
     def loop(self):
+        self.log("Loop...")
+
         if self.metro_health.check():
             self.log("Health checks are failing. I'm sad :(")
             self.sad()
