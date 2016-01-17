@@ -1,6 +1,7 @@
 from analogsensor import AnalogSensor
 
-REFERENCE_VOLTAGE = 3.3
+# Measured with multi-meter
+REFERENCE_VOLTAGE = 4.6
 
 class TempSensor(AnalogSensor):
     """TMP36 Handling Class
@@ -13,7 +14,7 @@ class TempSensor(AnalogSensor):
     def centigrade(self):
         voltage = self.value() * REFERENCE_VOLTAGE / 1024.0
         # Convert from 10 mv per degree with 500 mV offset to degrees ((voltage - 500mV) times 100)
-        return (voltage - (REFERENCE_VOLTAGE / 10)) * 100
+        return (voltage - 0.5) * 100
 
     def fahrenheit(self):
         return (self.centigrade() * 9.0 / 5.0) + 32.0
