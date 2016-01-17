@@ -128,12 +128,12 @@ class AquaPi:
             else:
                 self.log('Polling non-200 response')
                 self.event('error', 'poll-non-200')
-                # self.sad()
+                self.sad()
 
         except requests.RequestException:
             self.log('Polling failed')
             self.event('error', 'poll-exception')
-            # self.sad()
+            self.sad()
 
     def send_events(self):
         if len(self.events) > 0:
@@ -156,13 +156,13 @@ class AquaPi:
                 else:
                     self.log('Sending event non-200 response')
                     self.event('error', 'event-non-200')
-                    # self.sad()
+                    self.sad()
 
             except requests.RequestException:
                 self.events.appendleft(event)
                 self.log('Sending event failed')
                 self.event('error', 'event-exception')
-                # self.sad()
+                self.sad()
 
     def power(self, on):
         if on:
