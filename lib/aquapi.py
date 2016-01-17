@@ -82,11 +82,14 @@ class AquaPi:
             self.event('error', 'health-check-failure')
 
         if self.metro_sensor_sample.check():
+            self.log("Sampling sensors...")
             self.sensor_temp.read()
             self.sensor_light.read()
             self.sensor_liquid.read()
 
         if self.metro_sensor_send.check():
+            self.log("Creating sensor events...")
+
             # Temperature Sensor
             self.event('temp', self.sensor_temp.fahrenheit())
 
