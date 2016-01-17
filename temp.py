@@ -7,8 +7,10 @@ sensor_temp = TempSensor(spi, ADC_TEMP)
 
 while 1:
     sensor_temp.read()
+    reading = sensor_temp.value()
     reading_c = sensor_temp.centigrade()
     reading_f = sensor_temp.fahrenheit()
+    print "{}".format(reading)
     print "{} C".format(reading_c)
     print "{} F".format(reading_f)
     time.sleep(0.5)

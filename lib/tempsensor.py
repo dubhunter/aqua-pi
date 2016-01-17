@@ -11,7 +11,7 @@ class TempSensor(AnalogSensor):
 
     def centigrade(self):
         voltage = self.value() / 1024.0
-        # Convert from 10 mv per degree wit 500 mV offset to degrees ((volatge - 500mV) times 100)
+        # Convert from 10 mv per degree wit 500 mV offset to degrees ((voltage - 500mV) times 100)
         return (voltage - 0.5) * 100
 
     def fahrenheit(self):
