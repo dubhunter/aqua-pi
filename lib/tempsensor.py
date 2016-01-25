@@ -1,7 +1,6 @@
 from analogsensor import AnalogSensor
 
-# Measured with multi-meter
-REFERENCE_VOLTAGE = 4.6
+REFERENCE_VOLTAGE = 3.3
 
 
 class TempSensor(AnalogSensor):
