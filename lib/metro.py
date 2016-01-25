@@ -15,12 +15,14 @@ class Metro:
         self.interval_millis = interval_millis
 
     def check(self):
-        if self.time() - self.previous_millis >= self.interval_millis:
-            if self.interval <= 0:
-                self.previous_millis = self.time()
-            else:
-                self.previous_millis += self.interval_millis
+        now = self.time()
 
+        if self.interval <= 0:
+            self.previous_millis = now
+            return True
+
+        if now - self.previous_millis >= self.interval_millis:
+            self.previous_millis += self.interval_millis
             return True
 
         return False
