@@ -22,7 +22,7 @@ ADC_TEMP = 1
 URF_EMPTY = 64.0
 URF_FULL = 20.0
 
-Scripts.TRANSFER = Scripts.WHITE_FLASH
+Scripts.TRANSFER = Scripts.GREEN_FLASH
 
 
 class AquaPi:
